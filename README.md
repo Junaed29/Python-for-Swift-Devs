@@ -6,6 +6,10 @@ A practical reference for Swift and iOS developers learning Python.
 
 This project contains a complete side-by-side guide that maps familiar Swift concepts to Python syntax, patterns, and workflows.
 
+Read it online here:
+
+https://junaed29.github.io/Python-for-Swift-Devs/
+
 Topics covered include:
 
 - Python basics and syntax philosophy
@@ -17,6 +21,7 @@ Topics covered include:
 
 ## Files
 
+- `index.html`: GitHub Pages entry point
 - `python-for-swift-devs.html`: the full formatted guide
 
 ## Best For
@@ -25,7 +30,10 @@ Topics covered include:
 - iOS developers learning scripting, automation, or backend basics
 - Anyone who wants Swift-to-Python concept mapping with examples
 
-## How To Use
+## No Download Needed
 
-Open `python-for-swift-devs.html` in a browser to read the guide.
+You do not need to download anything to read the guide. Open the live site in your browser:
 
+https://junaed29.github.io/Python-for-Swift-Devs/
+
+If you want an offline copy, you can also open `python-for-swift-devs.html` locally.
