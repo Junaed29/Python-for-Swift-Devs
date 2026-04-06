@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python for Swift/iOS Developers — The Complete Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0f1117;--card:#181b25;--card2:#1e2230;--accent:#f7a44c;--accent2:#7c6cf0;--swift:#f05138;--python:#3b82f6;--green:#34d399;--text:#e2e8f0;--muted:#8892a8;--border:#2a2e3d;--tip-bg:#1a2332;--tip-border:#2d4a6f;--pink:#f472b6;--red:#ef4444}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;line-height:1.65;padding:0}
+.hero{background:linear-gradient(135deg,#0f1117 0%,#1a1040 40%,#15101f 70%,#0f1117 100%);padding:70px 24px 50px;text-align:center;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(124,108,240,.15),transparent 70%);border-radius:50%;animation:float 8s ease-in-out infinite}
+.hero::after{content:'';position:absolute;bottom:-80px;left:-80px;width:350px;height:350px;background:radial-gradient(circle,rgba(247,164,76,.1),transparent 70%);border-radius:50%;animation:float 10s ease-in-out infinite reverse}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,3.5rem);font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;position:relative;z-index:1}
+.hero .sub{color:var(--muted);font-size:1.1rem;position:relative;z-index:1;max-width:500px;margin:0 auto}
+.badges{display:flex;gap:12px;justify-content:center;margin-top:20px;position:relative;z-index:1;flex-wrap:wrap}
+.badge{padding:5px 16px;border-radius:20px;font-size:.8rem;font-weight:600}
+.badge.sw{background:rgba(240,81,56,.15);color:var(--swift);border:1px solid rgba(240,81,56,.3)}
+.badge.py{background:rgba(59,130,246,.15);color:var(--python);border:1px solid rgba(59,130,246,.3)}
+.badge.new{background:rgba(244,114,182,.12);color:var(--pink);border:1px solid rgba(244,114,182,.3)}
+.stats{display:flex;gap:32px;justify-content:center;margin-top:24px;position:relative;z-index:1}
+.stat{text-align:center}
+.stat .val{font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;color:var(--accent)}
+.stat .lbl{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+.container{max-width:920px;margin:0 auto;padding:24px 16px 80px}
+.nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:36px;padding:16px;background:var(--card);border-radius:12px;border:1px solid var(--border)}
+.nav a{padding:5px 12px;border-radius:8px;font-size:.75rem;color:var(--muted);text-decoration:none;transition:.2s;font-weight:500}
+.nav a:hover{background:var(--card2);color:var(--text)}
+section{margin-bottom:40px}
+section h2{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--accent);margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+section h2 .num{font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--accent2);background:rgba(124,108,240,.12);padding:2px 10px;border-radius:6px}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px}
+.compare .col{padding:14px 16px}
+.compare .col:first-child{background:rgba(240,81,56,.04);border-right:1px solid var(--border)}
+.compare .col:last-child{background:rgba(59,130,246,.04)}
+.compare .col-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.compare .col:first-child .col-label{color:var(--swift)}
+.compare .col:last-child .col-label{color:var(--python)}
+pre{font-family:'JetBrains Mono',monospace;font-size:.8rem;line-height:1.75;white-space:pre-wrap;color:var(--text)}
+.tip{background:var(--tip-bg);border:1px solid var(--tip-border);border-left:3px solid var(--python);border-radius:10px;padding:14px 16px;margin:10px 0 14px;font-size:.88rem}
+.tip strong{color:var(--python);font-size:.72rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px}
+.warn{background:rgba(247,164,76,.06);border:1px solid rgba(247,164,76,.2);border-left:3px solid var(--accent);border-radius:10px;padding:14px 16px;margin:10px 0 14px;font-size:.88rem}
+.warn strong{color:var(--accent);font-size:.72rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px}
+.gotcha{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-left:3px solid var(--red);border-radius:10px;padding:14px 16px;margin:10px 0 14px;font-size:.88rem}
+.gotcha strong{color:var(--red);font-size:.72rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px}
+.memo{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.2);border-left:3px solid var(--green);border-radius:10px;padding:14px 16px;margin:10px 0 14px;font-size:.88rem}
+.memo strong{color:var(--green);font-size:.72rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px}
+.single{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px}
+.single h3{font-size:.95rem;font-weight:600;margin-bottom:10px;color:var(--green)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.65rem;font-weight:700;margin-left:6px;vertical-align:middle}
+.tag.easy{background:rgba(52,211,153,.12);color:var(--green)}
+.tag.key{background:rgba(247,164,76,.12);color:var(--accent)}
+.tag.new{background:rgba(244,114,182,.12);color:var(--pink)}
+.cheat-table{width:100%;border-collapse:collapse;margin:10px 0;font-size:.83rem}
+.cheat-table th{text-align:left;padding:8px 12px;background:var(--card2);color:var(--accent);font-size:.72rem;text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid var(--border)}
+.cheat-table td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+.cheat-table td:first-child{font-family:'JetBrains Mono',monospace;color:var(--python);font-size:.8rem}
+.cheat-table td:nth-child(2){font-family:'JetBrains Mono',monospace;color:var(--swift);font-size:.8rem}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.grid2 .gcard{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px}
+.grid2 .gcard h4{font-size:.82rem;color:var(--accent2);margin-bottom:6px;font-weight:600}
+@media(max-width:640px){.compare{grid-template-columns:1fr}.compare .col:first-child{border-right:none;border-bottom:1px solid var(--border)}.grid2{grid-template-columns:1fr}.stats{gap:20px}}
+.k{color:#c792ea}.s{color:#c3e88d}.n{color:#f78c6c}.f{color:#82aaff}.c{color:#546e7a}.t{color:#ffcb6b}.b{color:#89ddff}.r{color:#ff5370}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Python for Swift Devs</h1>
+  <p class="sub">The complete reference — every Swift concept mapped to Python with tips, gotchas & real-world patterns</p>
+  <div class="badges"><span class="badge sw">Swift / iOS</span><span class="badge py">Python 3.10+</span><span class="badge new">21 Sections</span></div>
+  <div class="stats">
+    <div class="stat"><div class="val">21</div><div class="lbl">Sections</div></div>
+    <div class="stat"><div class="val">150+</div><div class="lbl">Examples</div></div>
+    <div class="stat"><div class="val">50+</div><div class="lbl">Tips</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+<nav class="nav">
+  <a href="#s1">Basics</a><a href="#s2">Variables</a><a href="#s3">Types</a><a href="#s4">Strings</a>
+  <a href="#s5">Collections</a><a href="#s6">Control Flow</a><a href="#s7">Functions</a><a href="#s8">OOP</a>
+  <a href="#s9">Protocols→ABC</a><a href="#s10">None</a><a href="#s11">Closures→Lambda</a><a href="#s12">Errors</a>
+  <a href="#s13">Modules</a><a href="#s14">File I/O</a><a href="#s15">Async/Await</a><a href="#s16">Generators</a>
+  <a href="#s17">Decorators</a><a href="#s18">HTTP &amp; APIs</a><a href="#s19">Testing</a><a href="#s20">Pythonic Tips</a>
+  <a href="#s21">Quick Ref</a>
+</nav>
+
+<!-- ═══ 01 BASICS ═══ -->
+<section id="s1">
+<h2><span class="num">01</span> The Basics — Syntax Philosophy</h2>
+
+<div class="compare">
+  <div class="col"><div class="col-label">🍎 Swift</div><pre><span class="c">// single-line comment</span>
+<span class="c">/* multi-line comment */</span>
+<span class="f">print</span>(<span class="s">"Hello, World!"</span>)
+<span class="c">// braces { } define blocks</span></pre></div>
+  <div class="col"><div class="col-label">🐍 Python</div><pre><span class="c"># single-line comment</span>
+<span class="c">""" multi-line comment """</span>
+<span class="f">print</span>(<span class="s">"Hello, World!"</span>)
+<span class="c"># INDENTATION defines blocks</span></pre></div>
+</div>
+
+<div class="warn"><strong>⚡ The #1 Rule — Indentation IS Your Braces</strong>
+Python uses 4 spaces (not tabs!) for code blocks. The colon <code>:</code> + indent replaces <code>{ }</code>. Get this wrong and nothing runs.</div>
+
+<div class="single"><h3>Running Python — Your "Build &amp; Run"</h3>
+<pre><span class="c"># Terminal (like running a playground)</span>
+python3 script.py
+
+<span class="c"># Interactive REPL (like Swift REPL)</span>
+python3
+>>> <span class="f">print</span>(<span class="s">"Hello"</span>)
+>>> exit()
+
+<span class="c"># Jupyter Notebook (like Xcode Playgrounds but better)</span>
+pip install jupyter
+jupyter notebook</pre></div>
+
+<div class="single"><h3>The Entry Point — <code>if __name__</code></h3>
+<pre><span class="c"># In Swift you have @main or AppDelegate</span>
+<span class="c"># In Python:</span>
+
+<span class="k">def</span> <span class="f">main</span>():
+    <span class="f">print</span>(<span class="s">"App started"</span>)
+
+<span class="k">if</span> __name__ == <span class="s">"__main__"</span>:
+    <span class="f">main</span>()
+
+<span class="c"># Runs main() only when you execute THIS file directly,</span>
+<span class="c"># not when another file imports it.</span></pre></div>
+
+<div class="tip"><strong>💡 iOS Dev Tip — Python Philosophy</strong>
+Type <code>import this</code> in the REPL to see "The Zen of Python." Key idea: "There should be one obvious way to do it." Python prefers one clear way unlike Swift's multiple approaches.</div>
+
+<div class="grid2">
+<div class="gcard"><h4>print() Options</h4><pre><span class="f">print</span>(<span class="s">"a"</span>, <span class="s">"b"</span>, <span class="s">"c"</span>)          <span class="c"># a b c</span>
+<span class="f">print</span>(<span class="s">"a"</span>, <span class="s">"b"</span>, sep=<span class="s">"-"</span>)       <span class="c"># a-b</span>
+<span class="f">print</span>(<span class="s">"no newline"</span>, end=<span class="s">""</span>)    <span class="c"># no \n</span>
+<span class="f">print</span>(<span class="s">f"x = {<span class="n">42</span>}"</span>)             <span class="c"># x = 42</span></pre></div>
+<div class="gcard"><h4>Input from User</h4><pre><span class="c"># Like readLine() in Swift</span>
+name = <span class="f">input</span>(<span class="s">"Your name: "</span>)
+age = <span class="t">int</span>(<span class="f">input</span>(<span class="s">"Age: "</span>))
+<span class="c"># input() always returns str!</span></pre></div>
+</div>
+</section>
+
+<!-- ═══ 02 VARIABLES ═══ -->
+<section id="s2">
+<h2><span class="num">02</span> Variables &amp; Constants</h2>
+
+<div class="compare">
+  <div class="col"><div class="col-label">🍎 Swift</div><pre><span class="k">var</span> name: <span class="t">String</span> = <span class="s">"Ali"</span>
+<span class="k">let</span> age: <span class="t">Int</span> = 25
+<span class="k">let</span> PI = 3.14    <span class="c">// truly immutable</span></pre></div>
+  <div class="col"><div class="col-label">🐍 Python</div><pre>name = <span class="s">"Ali"</span>
+AGE = 25          <span class="c"># convention only!</span>
+PI = 3.14         <span class="c"># nothing enforces it</span></pre></div>
+</div>
+
+<div class="warn"><strong>⚡ No let vs var</strong>
+Python has NO immutability keyword. UPPERCASE is just a "please don't change this" convention.</div>
+
+<div class="single"><h3>Type Hints <span class="tag easy">OPTIONAL</span></h3>
+<pre>name: <span class="t">str</span> = <span class="s">"Ali"</span>
+age: <span class="t">int</span> = 25
+scores: <span class="t">list</span>[<span class="t">int</span>] = [<span class="n">90</span>, <span class="n">85</span>]
+maybe: <span class="t">str</span> | <span class="k">None</span> = <span class="k">None</span>   <span class="c"># like String?</span>
+
+<span class="k">from</span> typing <span class="k">import</span> Optional
+name: Optional[<span class="t">str</span>] = <span class="k">None</span>  <span class="c"># same as str | None</span></pre></div>
+
+<div class="single"><h3>Multiple Assignment &amp; Naming</h3>
+<pre>x, y, z = <span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>       <span class="c"># multi assign</span>
+a, b = b, a              <span class="c"># swap — no temp!</span>
+a = b = c = <span class="n">0</span>            <span class="c"># same value</span>
+
+<span class="c"># Swift: camelCase → Python: snake_case</span>
+my_variable = <span class="n">10</span>         <span class="c"># variables</span>
+MY_CONSTANT = <span class="n">3.14</span>       <span class="c"># constants</span>
+<span class="k">def</span> <span class="f">my_function</span>(): ...    <span class="c"># functions</span>
+<span class="k">class</span> <span class="t">MyClass</span>: ...        <span class="c"># classes: PascalCase</span>
+_private_var = <span class="n">5</span>          <span class="c"># _ prefix = "private"</span></pre></div>
+
+<div class="gotcha"><strong>🚨 Gotcha — Mutable Default Trap</strong>
+<code>def add(item, lst=[]):</code> ← The <code>[]</code> is shared across ALL calls!<br>
+<code>def add(item, lst=None):</code> ← Do this instead, then <code>lst = lst or []</code> inside.</div>
+</section>
+
+<!-- ═══ 03 TYPES ═══ -->
+<section id="s3">
+<h2><span class="num">03</span> Data Types — Complete Map</h2>
+
+<table class="cheat-table">
+<tr><th>Python</th><th>Swift</th><th>Notes</th></tr>
+<tr><td>int</td><td>Int</td><td>Unlimited precision! No overflow</td></tr>
+<tr><td>float</td><td>Double</td><td>Always 64-bit</td></tr>
+<tr><td>complex</td><td>—</td><td><code>z = 3+4j</code></td></tr>
+<tr><td>str</td><td>String</td><td>Immutable, Unicode</td></tr>
+<tr><td>bool</td><td>Bool</td><td><code>True</code>/<code>False</code> capital!</td></tr>
+<tr><td>bytes</td><td>Data</td><td><code>b"hello"</code></td></tr>
+<tr><td>list</td><td>[Any]</td><td>Mutable, ordered</td></tr>
+<tr><td>tuple</td><td>(Int, String)</td><td>Immutable</td></tr>
+<tr><td>dict</td><td>[String: Any]</td><td>Key-value, ordered (3.7+)</td></tr>
+<tr><td>set</td><td>Set&lt;Int&gt;</td><td>Unique unordered</td></tr>
+<tr><td>frozenset</td><td>—</td><td>Immutable set</td></tr>
+<tr><td>None</td><td>nil</td><td>The null value</td></tr>
+</table>
+
+<div class="tip"><strong>💡 No Integer Overflow!</strong>
+<code>2 ** 1000</code> just works in Python. No <code>Int.max</code>, no overflow. Great for algorithms.</div>
+
+<div class="single"><h3>Type Checking &amp; Casting</h3>
+<pre><span class="f">type</span>(x)                 <span class="c"># &lt;class 'int'&gt;</span>
+<span class="f">isinstance</span>(x, <span class="t">int</span>)      <span class="c"># True — like "x is Int"</span>
+<span class="f">isinstance</span>(x, (<span class="t">int</span>, <span class="t">float</span>))  <span class="c"># check multiple</span>
+
+<span class="t">int</span>(<span class="s">"42"</span>)    <span class="t">float</span>(<span class="s">"3.14"</span>)    <span class="t">str</span>(<span class="n">42</span>)
+<span class="t">bool</span>(<span class="n">0</span>)      <span class="t">list</span>(<span class="s">"abc"</span>)      <span class="t">set</span>([<span class="n">1</span>,<span class="n">1</span>,<span class="n">2</span>])</pre></div>
+
+<div class="single"><h3>Number Operations</h3>
+<pre><span class="n">10</span> / <span class="n">3</span>      <span class="c"># 3.333... (always float!)</span>
+<span class="n">10</span> // <span class="n">3</span>     <span class="c"># 3        (floor division)</span>
+<span class="n">10</span> % <span class="n">3</span>      <span class="c"># 1        (modulo)</span>
+<span class="n">2</span> ** <span class="n">10</span>     <span class="c"># 1024     (power)</span>
+<span class="f">abs</span>(-<span class="n">5</span>)     <span class="c"># 5</span>
+<span class="f">round</span>(<span class="n">3.7</span>)  <span class="c"># 4</span>
+<span class="f">divmod</span>(<span class="n">10</span>,<span class="n">3</span>)<span class="c"># (3, 1)</span></pre></div>
+
+<div class="gotcha"><strong>🚨 Gotcha — Division</strong>
+Swift: <code>10 / 3 = 3</code>. Python: <code>10 / 3 = 3.333...</code>. Use <code>//</code> for integer division!</div>
+</section>
+
+<!-- ═══ 04 STRINGS ═══ -->
+<section id="s4">
+<h2><span class="num">04</span> Strings — Deep Dive</h2>
+
+<div class="compare">
+  <div class="col"><div class="col-label">🍎 Swift</div><pre><span class="k">let</span> name = <span class="s">"Ali"</span>
+<span class="s">"Hello \(name)"</span>
+name.<span class="f">count</span>
+name.<span class="f">uppercased</span>()
+name.<span class="f">contains</span>(<span class="s">"A"</span>)
+name.<span class="f">hasPrefix</span>(<span class="s">"A"</span>)
+name.<span class="f">hasSuffix</span>(<span class="s">"i"</span>)</pre></div>
+  <div class="col"><div class="col-label">🐍 Python</div><pre>name = <span class="s">"Ali"</span>
+<span class="s">f"Hello {name}"</span>
+<span class="f">len</span>(name)
+name.<span class="f">upper</span>()
+<span class="s">"A"</span> <span class="k">in</span> name
+name.<span class="f">startswith</span>(<span class="s">"A"</span>)
+name.<span class="f">endswith</span>(<span class="s">"i"</span>)</pre></div>
+</div>
+
+<div class="single"><h3>All String Methods You Need</h3>
+<pre>s = <span class="s">"  Hello, World!  "</span>
+
+<span class="c"># Case</span>
+s.<span class="f">upper</span>()  s.<span class="f">lower</span>()  s.<span class="f">title</span>()  s.<span class="f">capitalize</span>()  s.<span class="f">swapcase</span>()
+
+<span class="c"># Trim</span>
+s.<span class="f">strip</span>()     <span class="c"># both sides  → .trimmingCharacters</span>
+s.<span class="f">lstrip</span>()    <span class="c"># left only</span>
+s.<span class="f">rstrip</span>()    <span class="c"># right only</span>
+
+<span class="c"># Search</span>
+s.<span class="f">find</span>(<span class="s">"World"</span>)   <span class="c"># 9 or -1</span>
+s.<span class="f">index</span>(<span class="s">"World"</span>)  <span class="c"># 9 or raises error</span>
+s.<span class="f">count</span>(<span class="s">"l"</span>)      <span class="c"># 3</span>
+
+<span class="c"># Modify</span>
+s.<span class="f">replace</span>(<span class="s">"World"</span>, <span class="s">"Python"</span>)
+s.<span class="f">split</span>(<span class="s">","</span>)
+<span class="s">"-"</span>.<span class="f">join</span>([<span class="s">"a"</span>,<span class="s">"b"</span>,<span class="s">"c"</span>])  <span class="c"># "a-b-c"</span>
+
+<span class="c"># Check</span>
+<span class="s">"123"</span>.<span class="f">isdigit</span>()   <span class="s">"abc"</span>.<span class="f">isalpha</span>()   <span class="s">"  "</span>.<span class="f">isspace</span>()</pre></div>
+
+<div class="single"><h3>String Slicing <span class="tag key">⭐ YOU'LL LOVE THIS</span></h3>
+<pre>s = <span class="s">"Hello World"</span>
+s[<span class="n">0</span>]       <span class="c"># "H"        first char</span>
+s[-<span class="n">1</span>]      <span class="c"># "d"        last char</span>
+s[<span class="n">0</span>:<span class="n">5</span>]     <span class="c"># "Hello"    slice</span>
+s[<span class="n">6</span>:]      <span class="c"># "World"    from index 6</span>
+s[:<span class="n">5</span>]      <span class="c"># "Hello"    first 5</span>
+s[::-<span class="n">1</span>]    <span class="c"># "dlroW olleH" REVERSED!</span>
+s[::2]     <span class="c"># "HloWrd"   every 2nd</span></pre></div>
+
+<div class="tip"><strong>💡 Goodbye String.Index!</strong>
+Python's <code>s[0:5]</code> just works with integers. No more <code>string.index(string.startIndex, offsetBy:)</code> madness.</div>
+
+<div class="single"><h3>f-Strings — Advanced Formatting</h3>
+<pre><span class="s">f"Hi {name}!"</span>                  <span class="c"># basic</span>
+<span class="s">f"Total: ${price:.2f}"</span>         <span class="c"># "Total: $49.99"</span>
+<span class="s">f"Users: {count:,}"</span>            <span class="c"># "Users: 1,000,000"</span>
+<span class="s">f"{'Ali':>10}"</span>                 <span class="c"># "       Ali" right-align</span>
+<span class="s">f"{'Ali':^10}"</span>                 <span class="c"># "   Ali    " center</span>
+<span class="s">f"Bin: {<span class="n">255</span>:08b}"</span>             <span class="c"># "11111111"</span>
+<span class="s">f"Hex: {<span class="n">255</span>:#x}"</span>              <span class="c"># "0xff"</span>
+<span class="s">f"Pct: {<span class="n">0.856</span>:.1%}"</span>          <span class="c"># "85.6%"</span>
+<span class="s">f"Debug: {name!r}"</span>             <span class="c"># "'Ali'" (repr)</span>
+
+<span class="c"># Raw string (great for regex / paths)</span>
+path = <span class="s">r"C:\Users\name\file"</span>
+
+<span class="c"># Multi-line f-string</span>
+html = <span class="s">f"""
+&lt;h1&gt;{name}&lt;/h1&gt;
+&lt;p&gt;Age: {age}&lt;/p&gt;
+"""</span></pre></div>
+</section>
+
+<!-- ═══ 05 COLLECTIONS ═══ -->
+<section id="s5">
+<h2><span class="num">05</span> Collections — Lists, Dicts, Sets &amp; More</h2>
+
+<div class="single"><h3>Lists → Swift Arrays <span class="tag easy">EASY</span></h3>
+<pre>nums = [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>, <span class="n">4</span>, <span class="n">5</span>]
+repeated = [<span class="n">0</span>] * <span class="n">10</span>         <span class="c"># Array(repeating:count:)</span>
+
+<span class="c"># Add</span>
+nums.<span class="f">append</span>(<span class="n">6</span>)               <span class="c"># add one</span>
+nums.<span class="f">extend</span>([<span class="n">7</span>, <span class="n">8</span>])          <span class="c"># add many → .append(contentsOf:)</span>
+nums.<span class="f">insert</span>(<span class="n">0</span>, <span class="n">99</span>)           <span class="c"># insert at index</span>
+
+<span class="c"># Remove</span>
+nums.<span class="f">remove</span>(<span class="n">99</span>)              <span class="c"># by VALUE</span>
+nums.<span class="f">pop</span>()                   <span class="c"># last → .removeLast()</span>
+nums.<span class="f">pop</span>(<span class="n">0</span>)                  <span class="c"># first → .removeFirst()</span>
+<span class="k">del</span> nums[<span class="n">2</span>]                  <span class="c"># by index</span>
+nums.<span class="f">clear</span>()                 <span class="c"># all → .removeAll()</span>
+
+<span class="c"># Access</span>
+nums[<span class="n">0</span>]     nums[-<span class="n">1</span>]         <span class="c"># first / LAST</span>
+nums[<span class="n">1</span>:<span class="n">4</span>]                    <span class="c"># slice</span>
+
+<span class="c"># Search &amp; Sort</span>
+<span class="n">3</span> <span class="k">in</span> nums                    <span class="c"># .contains(3)</span>
+nums.<span class="f">index</span>(<span class="n">3</span>)                <span class="c"># .firstIndex(of:)</span>
+<span class="f">sorted</span>(nums)                 <span class="c"># NEW sorted → .sorted()</span>
+nums.<span class="f">sort</span>(reverse=<span class="k">True</span>)      <span class="c"># in-place desc</span>
+
+<span class="c"># Aggregate</span>
+<span class="f">len</span>(nums)  <span class="f">min</span>(nums)  <span class="f">max</span>(nums)  <span class="f">sum</span>(nums)</pre></div>
+
+<div class="single"><h3>List Comprehensions <span class="tag key">⭐ PYTHON'S SUPERPOWER</span></h3>
+<pre><span class="c"># Map:        nums.map { $0 * 2 }</span>
+doubled = [x * <span class="n">2</span> <span class="k">for</span> x <span class="k">in</span> nums]
+
+<span class="c"># Filter:     nums.filter { $0 % 2 == 0 }</span>
+evens = [x <span class="k">for</span> x <span class="k">in</span> nums <span class="k">if</span> x % <span class="n">2</span> == <span class="n">0</span>]
+
+<span class="c"># Map+Filter combined</span>
+result = [x * <span class="n">2</span> <span class="k">for</span> x <span class="k">in</span> nums <span class="k">if</span> x % <span class="n">2</span> == <span class="n">0</span>]
+
+<span class="c"># CompactMap: items.compactMap { $0 }</span>
+cleaned = [x <span class="k">for</span> x <span class="k">in</span> items <span class="k">if</span> x <span class="k">is not</span> <span class="k">None</span>]
+
+<span class="c"># FlatMap:    [[1,2],[3,4]].flatMap { $0 }</span>
+flat = [x <span class="k">for</span> sub <span class="k">in</span> nested <span class="k">for</span> x <span class="k">in</span> sub]
+
+<span class="c"># Dict comprehension</span>
+squares = {x: x**<span class="n">2</span> <span class="k">for</span> x <span class="k">in</span> <span class="f">range</span>(<span class="n">6</span>)}</pre></div>
+
+<div class="single"><h3>Dictionaries</h3>
+<pre>user = {<span class="s">"name"</span>: <span class="s">"Ali"</span>, <span class="s">"age"</span>: <span class="n">25</span>}
+
+user[<span class="s">"name"</span>]                   <span class="c"># "Ali" (KeyError if missing!)</span>
+user.<span class="f">get</span>(<span class="s">"phone"</span>, <span class="s">"N/A"</span>)      <span class="c"># safe — like dict["k", default:]</span>
+user[<span class="s">"email"</span>] = <span class="s">"a@b.c"</span>       <span class="c"># add/update</span>
+user.<span class="f">update</span>({<span class="s">"age"</span>: <span class="n">26</span>})       <span class="c"># merge</span>
+merged = {**d1, **d2}           <span class="c"># spread merge</span>
+<span class="k">del</span> user[<span class="s">"age"</span>]                <span class="c"># remove</span>
+user.<span class="f">pop</span>(<span class="s">"age"</span>, <span class="k">None</span>)         <span class="c"># safe remove</span>
+
+<span class="k">for</span> k, v <span class="k">in</span> user.<span class="f">items</span>():     <span class="c"># iterate pairs</span>
+<span class="s">"name"</span> <span class="k">in</span> user                 <span class="c"># key exists?</span></pre></div>
+
+<div class="single"><h3>Tuples &amp; Sets</h3>
+<pre><span class="c"># Tuples — immutable</span>
+point = (<span class="n">10</span>, <span class="n">20</span>)
+x, y = point              <span class="c"># destructure</span>
+
+<span class="c"># Named tuples</span>
+<span class="k">from</span> collections <span class="k">import</span> namedtuple
+Point = <span class="f">namedtuple</span>(<span class="s">"Point"</span>, [<span class="s">"x"</span>, <span class="s">"y"</span>])
+p = Point(<span class="n">10</span>, <span class="n">20</span>); p.x  <span class="c"># 10</span>
+
+<span class="c"># Sets</span>
+colors = {<span class="s">"red"</span>, <span class="s">"blue"</span>}
+colors.<span class="f">add</span>(<span class="s">"green"</span>)
+colors.<span class="f">discard</span>(<span class="s">"red"</span>)     <span class="c"># safe remove</span>
+a & b  <span class="c"># intersection</span>   a | b  <span class="c"># union</span>
+a - b  <span class="c"># difference</span>     a ^ b  <span class="c"># symmetric diff</span></pre></div>
+
+<div class="single"><h3>collections Module — Power Tools <span class="tag new">BONUS</span></h3>
+<pre><span class="k">from</span> collections <span class="k">import</span> Counter, defaultdict, deque
+
+Counter(<span class="s">"banana"</span>)          <span class="c"># {'a':3, 'n':2, 'b':1}</span>
+Counter(<span class="s">"banana"</span>).most_common(<span class="n">2</span>)
+
+dd = defaultdict(<span class="t">list</span>)
+dd[<span class="s">"fruits"</span>].<span class="f">append</span>(<span class="s">"apple"</span>) <span class="c"># no KeyError!</span>
+
+q = deque([<span class="n">1</span>,<span class="n">2</span>,<span class="n">3</span>])
+q.<span class="f">appendleft</span>(<span class="n">0</span>)             <span class="c"># O(1) vs list's O(n)</span></pre></div>
+</section>
+
+<!-- ═══ 06 CONTROL FLOW ═══ -->
+<section id="s6">
+<h2><span class="num">06</span> Control Flow</h2>
+
+<div class="compare">
+  <div class="col"><div class="col-label">🍎 Swift</div><pre><span class="k">if</span> score > <span class="n">90</span> {
+    <span class="f">print</span>(<span class="s">"A"</span>)
+} <span class="k">else if</span> score > <span class="n">80</span> {
+    <span class="f">print</span>(<span class="s">"B"</span>)
+} <span class="k">else</span> {
+    <span class="f">print</span>(<span class="s">"C"</span>)
+}
+<span class="k">for</span> i <span class="k">in</span> <span class="n">0</span>..<span class="n">5</span> { }
+<span class="k">for</span> (i,v) <span class="k">in</span> arr.<span class="f">enumerated</span>() { }</pre></div>
+  <div class="col"><div class="col-label">🐍 Python</div><pre><span class="k">if</span> score > <span class="n">90</span>:
+    <span class="f">print</span>(<span class="s">"A"</span>)
+<span class="k">elif</span> score > <span class="n">80</span>:
+    <span class="f">print</span>(<span class="s">"B"</span>)
+<span class="k">else</span>:
+    <span class="f">print</span>(<span class="s">"C"</span>)
+
+<span class="k">for</span> i <span class="k">in</span> <span class="f">range</span>(<span class="n">5</span>):
+<span class="k">for</span> i, v <span class="k">in</span> <span class="f">enumerate</span>(arr):</pre></div>
+</div>
+
+<div class="single"><h3>range() Complete</h3>
+<pre><span class="f">range</span>(<span class="n">5</span>)            <span class="c"># 0,1,2,3,4</span>
+<span class="f">range</span>(<span class="n">2</span>, <span class="n">8</span>)         <span class="c"># 2,3,4,5,6,7</span>
+<span class="f">range</span>(<span class="n">0</span>, <span class="n">10</span>, <span class="n">2</span>)     <span class="c"># 0,2,4,6,8</span>
+<span class="f">range</span>(<span class="n">10</span>, <span class="n">0</span>, -<span class="n">1</span>)   <span class="c"># 10,9,...,1</span></pre></div>
+
+<div class="single"><h3>Looping Patterns</h3>
+<pre><span class="c"># Enumerate with start</span>
+<span class="k">for</span> i, item <span class="k">in</span> <span class="f">enumerate</span>(fruits, start=<span class="n">1</span>):
+    <span class="f">print</span>(<span class="s">f"{i}. {item}"</span>)
+
+<span class="c"># Zip — pair two lists</span>
+<span class="k">for</span> name, age <span class="k">in</span> <span class="f">zip</span>(names, ages):
+    <span class="f">print</span>(<span class="s">f"{name} is {age}"</span>)
+
+<span class="c"># Reversed</span>
+<span class="k">for</span> item <span class="k">in</span> <span class="f">reversed</span>(nums): ...
+
+<span class="c"># for/else — unique to Python!</span>
+<span class="k">for</span> item <span class="k">in</span> items:
+    <span class="k">if</span> item == target: <span class="k">break</span>
+<span class="k">else</span>:
+    <span class="f">print</span>(<span class="s">"Not found!"</span>)  <span class="c"># runs if NO break</span></pre></div>
+
+<div class="single"><h3>Operators &amp; Ternary</h3>
+<pre><span class="c"># Logical: and, or, not (not &&, ||, !)</span>
+<span class="c"># Chained comparison — Python exclusive!</span>
+<span class="k">if</span> <span class="n">0</span> < x < <span class="n">100</span>:           <span class="c"># clean!</span>
+<span class="k">if</span> <span class="n">1</span> <= age <= <span class="n">120</span>:
+
+<span class="c"># Ternary (reversed from Swift!)</span>
+r = <span class="s">"yes"</span> <span class="k">if</span> x > <span class="n">0</span> <span class="k">else</span> <span class="s">"no"</span>
+
+<span class="c"># Identity</span>
+x <span class="k">is</span> <span class="k">None</span>      x <span class="k">is not</span> <span class="k">None</span></pre></div>
+
+<div class="single"><h3>match/case <span class="tag new">PYTHON 3.10+</span></h3>
+<pre><span class="k">match</span> command:
+    <span class="k">case</span> <span class="s">"quit"</span>:              <span class="f">exit</span>()
+    <span class="k">case</span> <span class="s">"hello"</span> | <span class="s">"hi"</span>:     <span class="f">print</span>(<span class="s">"Hi!"</span>)
+    <span class="k">case</span> [x, y]:              <span class="f">print</span>(<span class="s">f"pair: {x},{y}"</span>)
+    <span class="k">case</span> {<span class="s">"name"</span>: name}:      <span class="f">print</span>(name)
+    <span class="k">case</span> _:                   <span class="f">print</span>(<span class="s">"default"</span>)</pre></div>
+</section>
+
+<!-- ═══ 07 FUNCTIONS ═══ -->
+<section id="s7">
+<h2><span class="num">07</span> Functions — Complete Guide</h2>
+
+<div class="compare">
+  <div class="col"><div class="col-label">🍎 Swift</div><pre><span class="k">func</span> <span class="f">greet</span>(name: <span class="t">String</span>,
+           loud: <span class="t">Bool</span> = <span class="k">false</span>
+) -> <span class="t">String</span> {
+    <span class="k">return</span> <span class="s">"Hi \(name)"</span>
+}
+<span class="f">greet</span>(name: <span class="s">"Ali"</span>)</pre></div>
+  <div class="col"><div class="col-label">🐍 Python</div><pre><span class="k">def</span> <span class="f">greet</span>(name: <span class="t">str</span>,
+          loud: <span class="t">bool</span> = <span class="k">False</span>
+) -> <span class="t">str</span>:
+    <span class="k">return</span> <span class="s">f"Hi {name}"</span>
+
+<span class="f">greet</span>(<span class="s">"Ali"</span>)</pre></div>
+</div>
+
+<div class="single"><h3>*args and **kwargs <span class="tag key">⭐ NO SWIFT EQUIVALENT</span></h3>
+<pre><span class="k">def</span> <span class="f">log</span>(*args):                <span class="c"># variadic positional</span>
+    <span class="k">for</span> a <span class="k">in</span> args: <span class="f">print</span>(a)
+
+<span class="k">def</span> <span class="f">config</span>(**kwargs):           <span class="c"># variadic keyword</span>
+    <span class="k">for</span> k, v <span class="k">in</span> kwargs.<span class="f">items</span>():
+        <span class="f">print</span>(<span class="s">f"{k} = {v}"</span>)
+
+<span class="f">log</span>(<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>)
+<span class="f">config</span>(theme=<span class="s">"dark"</span>, lang=<span class="s">"en"</span>)</pre></div>
+
+<div class="single"><h3>Multiple Returns &amp; Docstrings</h3>
+<pre><span class="k">def</span> <span class="f">get_user</span>():
+    <span class="k">return</span> <span class="s">"Ali"</span>, <span class="n">25</span>, <span class="s">"KL"</span>     <span class="c"># returns tuple</span>
+
+name, age, city = <span class="f">get_user</span>()
+name, *rest = <span class="f">get_user</span>()       <span class="c"># rest = [25, "KL"]</span>
+_, age, _ = <span class="f">get_user</span>()         <span class="c"># ignore with _</span>
+
+<span class="k">def</span> <span class="f">calc_bmi</span>(weight: <span class="t">float</span>, height: <span class="t">float</span>) -> <span class="t">float</span>:
+    <span class="s">"""Calculate Body Mass Index.
+
+    Args:
+        weight: Weight in kg
+        height: Height in meters
+    Returns:
+        BMI as float
+    """</span>
+    <span class="k">return</span> weight / height ** <span class="n">2</span></pre></div>
+</section>
+
+<!-- ═══ 08 OOP ═══ -->
+<section id="s8">
+<h2><span class="num">08</span> Classes &amp; OOP</h2>
+
+<div class="compare">
+  <div class="col"><div class="col-label">🍎 Swift</div><pre><span class="k">class</span> <span class="t">Dog</span> {
+    <span class="k">var</span> name: <span class="t">String</span>
+    <span class="k">init</span>(name: <span class="t">String</span>) {
+        <span class="k">self</span>.name = name
+    }
+    <span class="k">func</span> <span class="f">bark</span>() -> <span class="t">String</span> {
+        <span class="k">return</span> <span class="s">"\(name) barks!"</span>
+    }
+}</pre></div>
+  <div class="col"><div class="col-label">🐍 Python</div><pre><span class="k">class</span> <span class="t">Dog</span>:
+    <span class="k">def</span> <span class="f">__init__</span>(<span class="k">self</span>, name: <span class="t">str</span>):
+        <span class="k">self</span>.name = name
+
+    <span class="k">def</span> <span class="f">bark</span>(<span class="k">self</span>) -> <span class="t">str</span>:
+        <span class="k">return</span> <span class="s">f"{self.name} barks!"</span>
+
+</pre></div>
+</div>
+
+<div class="warn"><strong>⚡ Key Differences</strong>
+1. Every method needs explicit <code>self</code> · 2. Constructor is <code>__init__</code> · 3. No <code>new</code> keyword · 4. Properties created inside <code>__init__</code> · 5. No access modifiers — use <code>_</code> convention</div>
+
+<div class="single"><h3>Inheritance &amp; @property</h3>
+<pre><span class="k">class</span> <span class="t">Puppy</span>(<span class="t">Dog</span>):                    <span class="c"># class Puppy: Dog</span>
+    <span class="k">def</span> <span class="f">__init__</span>(<span class="k">self</span>, name, toy):
+        <span class="f">super</span>().<span class="f">__init__</span>(name)        <span class="c"># super.init(name:)</span>
+        <span class="k">self</span>.toy = toy
+    <span class="k">def</span> <span class="f">bark</span>(<span class="k">self</span>):                  <span class="c"># override (no keyword!)</span>
+        <span class="k">return</span> <span class="s">f"{self.name} yips!"</span>
+
+<span class="c"># Computed property</span>
+<span class="k">class</span> <span class="t">Circle</span>:
+    <span class="k">def</span> <span class="f">__init__</span>(<span class="k">self</span>, r): <span class="k">self</span>._r = r
+
+    <span class="b">@property</span>
+    <span class="k">def</span> <span class="f">area</span>(<span class="k">self</span>):                <span class="c"># var area: Double { }</span>
+        <span class="k">return</span> <span class="n">3.14159</span> * <span class="k">self</span>._r ** <span class="n">2</span>
+
+    <span class="b">@property</span>
+    <span class="k">def</span> <span class="f">radius</span>(<span class="k">self</span>): <span class="k">return</span> <span class="k">self</span>._r
+    <span class="b">@radius.setter</span>
+    <span class="k">def</span> <span class="f">radius</span>(<span class="k">self</span>, val):
+        <span class="k">if</span> val < <span class="n">0</span>: <span class="k">raise</span> <span class="t">ValueError</span>
+        <span class="k">self</span>._r = val</pre></div>
+
+<div class="single"><h3>Dunder Methods <span class="tag key">⭐ IMPORTANT</span></h3>
+<pre><span class="k">class</span> <span class="t">Money</span>:
+    <span class="k">def</span> <span class="f">__init__</span>(<span class="k">self</span>, amt): <span class="k">self</span>.amt = amt
+    <span class="k">def</span> <span class="f">__repr__</span>(<span class="k">self</span>):      <span class="k">return</span> <span class="s">f"Money({self.amt})"</span>   <span class="c"># debugDescription</span>
+    <span class="k">def</span> <span class="f">__str__</span>(<span class="k">self</span>):       <span class="k">return</span> <span class="s">f"${self.amt:.2f}"</span>    <span class="c"># description</span>
+    <span class="k">def</span> <span class="f">__eq__</span>(<span class="k">self</span>, o):     <span class="k">return</span> <span class="k">self</span>.amt == o.amt     <span class="c"># Equatable</span>
+    <span class="k">def</span> <span class="f">__lt__</span>(<span class="k">self</span>, o):     <span class="k">return</span> <span class="k">self</span>.amt < o.amt      <span class="c"># Comparable</span>
+    <span class="k">def</span> <span class="f">__add__</span>(<span class="k">self</span>, o):    <span class="k">return</span> <span class="t">Money</span>(<span class="k">self</span>.amt+o.amt) <span class="c"># + operator</span>
+    <span class="k">def</span> <span class="f">__len__</span>(<span class="k">self</span>):      <span class="k">return</span> <span class="f">abs</span>(<span class="t">int</span>(<span class="k">self</span>.amt))    <span class="c"># len()</span>
+    <span class="k">def</span> <span class="f">__getitem__</span>(<span class="k">self</span>,k): ...                            <span class="c"># subscript</span></pre></div>
+
+<div class="single"><h3>@dataclass — Like Swift Structs <span class="tag key">⭐ USE THIS</span></h3>
+<pre><span class="k">from</span> dataclasses <span class="k">import</span> dataclass, field
+
+<span class="b">@dataclass</span>
+<span class="k">class</span> <span class="t">User</span>:
+    name: <span class="t">str</span>
+    age: <span class="t">int</span>
+    email: <span class="t">str</span> = <span class="s">""</span>
+    tags: <span class="t">list</span> = field(default_factory=<span class="t">list</span>)
+
+<span class="c"># Auto: __init__, __repr__, __eq__  (like struct + Equatable!)</span>
+u1 = <span class="t">User</span>(<span class="s">"Ali"</span>, <span class="n">25</span>)
+u2 = <span class="t">User</span>(<span class="s">"Ali"</span>, <span class="n">25</span>)
+u1 == u2   <span class="c"># True!</span>
+
+<span class="b">@dataclass</span>(frozen=<span class="k">True</span>)       <span class="c"># immutable!</span>
+<span class="k">class</span> <span class="t">Point</span>:
+    x: <span class="t">float</span>; y: <span class="t">float</span></pre></div>
+
+<div class="single"><h3>@classmethod &amp; @staticmethod</h3>
+<pre><span class="k">class</span> <span class="t">User</span>:
+    _count = <span class="n">0</span>
+    <span class="k">def</span> <span class="f">__init__</span>(<span class="k">self</span>, name):
+        <span class="k">self</span>.name = name; <span class="t">User</span>._count += <span class="n">1</span>
+
+    <span class="b">@classmethod</span>                      <span class="c"># convenience init</span>
+    <span class="k">def</span> <span class="f">from_json</span>(cls, data):
+        <span class="k">return</span> cls(data[<span class="s">"name"</span>])
+
+    <span class="b">@staticmethod</span>                     <span class="c"># static func</span>
+    <span class="k">def</span> <span class="f">validate</span>(name): <span class="k">return</span> <span class="f">len</span>(name) > <span class="n">0</span></pre></div>
+</section>
+
+<!-- ═══ 09 PROTOCOLS ═══ -->
+<section id="s9">
+<h2><span class="num">09</span> Protocols → Abstract Base Classes <span class="tag new">NEW</span></h2>
+
+<div class="compare">
+  <div class="col"><div class="col-label">🍎 Swift</div><pre><span class="k">protocol</span> <span class="t">Drawable</span> {
+    <span class="k">func</span> <span class="f">draw</span>()
+    <span class="k">var</span> color: <span class="t">String</span> { <span class="k">get</span> }
+}
+<span class="k">class</span> <span class="t">Circle</span>: <span class="t">Drawable</span> {
+    <span class="k">var</span> color = <span class="s">"red"</span>
+    <span class="k">func</span> <span class="f">draw</span>() { }
+}</pre></div>
+  <div class="col"><div class="col-label">🐍 Python</div><pre><span class="k">from</span> abc <span class="k">import</span> ABC, abstractmethod
+
+<span class="k">class</span> <span class="t">Drawable</span>(ABC):
+    <span class="b">@abstractmethod</span>
+    <span class="k">def</span> <span class="f">draw</span>(<span class="k">self</span>): ...
+    <span class="b">@property</span>
+    <span class="b">@abstractmethod</span>
+    <span class="k">def</span> <span class="f">color</span>(<span class="k">self</span>): ...
+
+<span class="k">class</span> <span class="t">Circle</span>(<span class="t">Drawable</span>):
+    color = <span class="s">"red"</span>
+    <span class="k">def</span> <span class="f">draw</span>(<span class="k">self</span>): ...</pre></div>
+</div>
+
+<div class="tip"><strong>💡 Duck Typing</strong>
+Python mostly uses "duck typing" — if it has the method, it works. You often don't <em>need</em> formal ABCs. Just call the method.</div>
+</section>
+
+<!-- ═══ 10 NONE ═══ -->
+<section id="s10">
+<h2><span class="num">10</span> Optionals → None Handling</h2>
+
+<div class="compare">
+  <div class="col"><div class="col-label">🍎 Swift</div><pre><span class="k">var</span> name: <span class="t">String?</span> = <span class="k">nil</span>
+<span class="k">if let</span> n = name { <span class="f">print</span>(n) }
+<span class="k">let</span> r = name ?? <span class="s">"Unknown"</span>
+<span class="k">guard let</span> n = name <span class="k">else</span> { <span class="k">return</span> }
+name?.<span class="f">uppercased</span>()</pre></div>
+  <div class="col"><div class="col-label">🐍 Python</div><pre>name = <span class="k">None</span>
+<span class="k">if</span> name <span class="k">is not</span> <span class="k">None</span>: <span class="f">print</span>(name)
+r = name <span class="k">or</span> <span class="s">"Unknown"</span>
+<span class="k">if</span> name <span class="k">is</span> <span class="k">None</span>: <span class="k">return</span>
+name.<span class="f">upper</span>() <span class="k">if</span> name <span class="k">else</span> <span class="k">None</span></pre></div>
+</div>
+
+<div class="gotcha"><strong>🚨 Falsy Trap</strong>
+<code>name or "default"</code> also treats <code>""</code>, <code>0</code>, <code>[]</code>, <code>False</code> as falsy. For exact nil-coalescing:<br>
+<code>name if name is not None else "default"</code></div>
+
+<div class="single"><h3>Safe Navigation Patterns</h3>
+<pre><span class="c"># Swift: user?.address?.city</span>
+
+<span class="c"># Pattern 1 — try/except (most Pythonic)</span>
+<span class="k">try</span>:
+    city = user.address.city
+<span class="k">except</span> <span class="t">AttributeError</span>:
+    city = <span class="k">None</span>
+
+<span class="c"># Pattern 2 — for dicts</span>
+city = data.<span class="f">get</span>(<span class="s">"user"</span>, {}).<span class="f">get</span>(<span class="s">"address"</span>, {}).<span class="f">get</span>(<span class="s">"city"</span>)</pre></div>
+</section>
+
+<!-- ═══ 11 CLOSURES ═══ -->
+<section id="s11">
+<h2><span class="num">11</span> Closures → Lambdas</h2>
+
+<div class="compare">
+  <div class="col"><div class="col-label">🍎 Swift</div><pre><span class="k">let</span> double = { (x:<span class="t">Int</span>) -> <span class="t">Int</span> <span class="k">in</span>
+    <span class="k">return</span> x * <span class="n">2</span>
+}
+nums.<span class="f">sorted</span> { $0 > $1 }
+nums.<span class="f">map</span> { $0 * <span class="n">2</span> }
+nums.<span class="f">filter</span> { $0 > <span class="n">3</span> }
+nums.<span class="f">reduce</span>(<span class="n">0</span>, +)</pre></div>
+  <div class="col"><div class="col-label">🐍 Python</div><pre>double = <span class="k">lambda</span> x: x * <span class="n">2</span>
+
+<span class="f">sorted</span>(nums, reverse=<span class="k">True</span>)
+[x * <span class="n">2</span> <span class="k">for</span> x <span class="k">in</span> nums]       <span class="c"># prefer!</span>
+[x <span class="k">for</span> x <span class="k">in</span> nums <span class="k">if</span> x><span class="n">3</span>]  <span class="c"># prefer!</span>
+<span class="f">sum</span>(nums)</pre></div>
+</div>
+
+<div class="memo"><strong>✅ Comprehensions Beat map/filter</strong>
+<code>[x * 2 for x in nums]</code> is faster and more readable than <code>list(map(lambda x: x*2, nums))</code></div>
+
+<div class="single"><h3>Sorting with Key Functions</h3>
+<pre>users = [{<span class="s">"name"</span>: <span class="s">"Bo"</span>, <span class="s">"age"</span>: <span class="n">30</span>}, {<span class="s">"name"</span>: <span class="s">"Ali"</span>, <span class="s">"age"</span>: <span class="n">25</span>}]
+<span class="f">sorted</span>(users, key=<span class="k">lambda</span> u: u[<span class="s">"age"</span>])   <span class="c"># sort by age</span>
+<span class="f">sorted</span>(words, key=<span class="f">len</span>)                  <span class="c"># sort by length</span>
+<span class="f">sorted</span>(words, key=<span class="t">str</span>.<span class="f">lower</span>)             <span class="c"># case-insensitive</span></pre></div>
+</section>
+
+<!-- ═══ 12 ERRORS ═══ -->
+<section id="s12">
+<h2><span class="num">12</span> Error Handling</h2>
+
+<div class="compare">
+  <div class="col"><div class="col-label">🍎 Swift</div><pre><span class="k">do</span> {
+    <span class="k">let</span> data = <span class="k">try</span> <span class="f">loadFile</span>()
+} <span class="k">catch</span> <span class="t">AppError</span>.notFound {
+    ...
+} <span class="k">catch</span> {
+    <span class="f">print</span>(error)
+}</pre></div>
+  <div class="col"><div class="col-label">🐍 Python</div><pre><span class="k">try</span>:
+    data = <span class="f">load_file</span>()
+<span class="k">except</span> <span class="t">FileNotFoundError</span>:
+    ...
+<span class="k">except</span> <span class="t">Exception</span> <span class="k">as</span> e:
+    <span class="f">print</span>(e)
+<span class="k">finally</span>:
+    <span class="f">print</span>(<span class="s">"cleanup"</span>)  <span class="c"># defer{}</span></pre></div>
+</div>
+
+<div class="single"><h3>Custom Errors &amp; Common Exceptions</h3>
+<pre><span class="k">class</span> <span class="t">AppError</span>(<span class="t">Exception</span>): <span class="k">pass</span>
+<span class="k">class</span> <span class="t">NotFound</span>(<span class="t">AppError</span>): <span class="k">pass</span>
+<span class="k">raise</span> <span class="t">NotFound</span>(<span class="s">"User missing"</span>)</pre>
+
+<table class="cheat-table">
+<tr><th>Exception</th><th>When</th></tr>
+<tr><td>ValueError</td><td>Wrong value</td></tr>
+<tr><td>TypeError</td><td>Wrong type</td></tr>
+<tr><td>KeyError</td><td>Dict key missing</td></tr>
+<tr><td>IndexError</td><td>List out of range</td></tr>
+<tr><td>AttributeError</td><td>No such property/method</td></tr>
+<tr><td>FileNotFoundError</td><td>File doesn't exist</td></tr>
+<tr><td>ZeroDivisionError</td><td>÷ by zero</td></tr>
+</table></div>
+
+<div class="tip"><strong>💡 EAFP vs LBYL</strong>
+Swift: "Look Before You Leap" (<code>if let</code>, <code>guard</code>). Python: "Easier to Ask Forgiveness" — just <code>try</code> it and catch errors. try/except is normal flow control in Python.</div>
+</section>
+
+<!-- ═══ 13 MODULES ═══ -->
+<section id="s13">
+<h2><span class="num">13</span> Modules, Packages &amp; Imports</h2>
+
+<div class="single"><h3>Import Styles</h3>
+<pre><span class="k">import</span> os                       <span class="c"># whole module</span>
+<span class="k">from</span> os <span class="k">import</span> path             <span class="c"># specific item</span>
+<span class="k">from</span> os <span class="k">import</span> path <span class="k">as</span> p       <span class="c"># alias</span>
+<span class="k">import</span> json <span class="k">as</span> j               <span class="c"># module alias</span></pre></div>
+
+<div class="single"><h3>Essential Standard Library</h3>
+<table class="cheat-table">
+<tr><th>Module</th><th>Purpose</th><th>Swift</th></tr>
+<tr><td>os / pathlib</td><td>File system</td><td>FileManager</td></tr>
+<tr><td>json</td><td>JSON encode/decode</td><td>Codable</td></tr>
+<tr><td>datetime</td><td>Dates &amp; times</td><td>Foundation.Date</td></tr>
+<tr><td>re</td><td>Regular expressions</td><td>NSRegularExpression</td></tr>
+<tr><td>math / random</td><td>Math &amp; random</td><td>Foundation</td></tr>
+<tr><td>collections</td><td>Counter, deque</td><td>—</td></tr>
+<tr><td>itertools</td><td>Iterator tools</td><td>Sequence ext</td></tr>
+<tr><td>functools</td><td>reduce, cache</td><td>—</td></tr>
+<tr><td>dataclasses</td><td>Auto classes</td><td>struct</td></tr>
+<tr><td>unittest/pytest</td><td>Testing</td><td>XCTest</td></tr>
+<tr><td>logging</td><td>Logging</td><td>os.log</td></tr>
+<tr><td>sqlite3</td><td>SQLite DB</td><td>Core Data</td></tr>
+</table></div>
+
+<div class="single"><h3>pip &amp; Virtual Environments</h3>
+<pre><span class="c"># Install</span>
+pip install requests flask numpy
+
+<span class="c"># Virtual env (one per project!)</span>
+python3 -m venv .venv
+source .venv/bin/activate     <span class="c"># macOS/Linux</span>
+pip install -r requirements.txt
+pip freeze > requirements.txt
+deactivate</pre></div>
+</section>
+
+<!-- ═══ 14 FILE I/O ═══ -->
+<section id="s14">
+<h2><span class="num">14</span> File I/O &amp; JSON</h2>
+
+<div class="single"><h3>Reading &amp; Writing</h3>
+<pre><span class="c"># Write</span>
+<span class="k">with</span> <span class="f">open</span>(<span class="s">"out.txt"</span>, <span class="s">"w"</span>) <span class="k">as</span> f:
+    f.<span class="f">write</span>(<span class="s">"Hello\n"</span>)
+
+<span class="c"># Read all</span>
+<span class="k">with</span> <span class="f">open</span>(<span class="s">"out.txt"</span>) <span class="k">as</span> f:
+    content = f.<span class="f">read</span>()
+
+<span class="c"># Read line by line (memory efficient)</span>
+<span class="k">with</span> <span class="f">open</span>(<span class="s">"big.txt"</span>) <span class="k">as</span> f:
+    <span class="k">for</span> line <span class="k">in</span> f:
+        <span class="f">print</span>(line.<span class="f">strip</span>())
+
+<span class="c"># Append</span>
+<span class="k">with</span> <span class="f">open</span>(<span class="s">"log.txt"</span>, <span class="s">"a"</span>) <span class="k">as</span> f: ...
+
+<span class="c"># Binary (like Data in Swift)</span>
+<span class="k">with</span> <span class="f">open</span>(<span class="s">"img.png"</span>, <span class="s">"rb"</span>) <span class="k">as</span> f: data = f.<span class="f">read</span>()</pre></div>
+
+<div class="warn"><strong>⚡ Always use <code>with</code></strong> — it auto-closes the file like <code>defer</code>.</div>
+
+<div class="single"><h3>JSON — Way Easier Than Codable</h3>
+<pre><span class="k">import</span> json
+
+data = {<span class="s">"name"</span>: <span class="s">"Ali"</span>, <span class="s">"age"</span>: <span class="n">25</span>}
+json_str = json.<span class="f">dumps</span>(data, indent=<span class="n">2</span>)    <span class="c"># → JSON string</span>
+obj = json.<span class="f">loads</span>(json_str)               <span class="c"># → dict</span>
+
+<span class="c"># File I/O</span>
+<span class="k">with</span> <span class="f">open</span>(<span class="s">"data.json"</span>) <span class="k">as</span> f:     data = json.<span class="f">load</span>(f)
+<span class="k">with</span> <span class="f">open</span>(<span class="s">"data.json"</span>,<span class="s">"w"</span>) <span class="k">as</span> f: json.<span class="f">dump</span>(data, f, indent=<span class="n">2</span>)</pre></div>
+
+<div class="single"><h3>pathlib — Modern Paths <span class="tag key">⭐ USE THIS</span></h3>
+<pre><span class="k">from</span> pathlib <span class="k">import</span> Path
+
+p = Path(<span class="s">"docs"</span>) / <span class="s">"report.txt"</span>   <span class="c"># like URL!</span>
+p.<span class="f">exists</span>()   p.<span class="f">is_file</span>()   p.<span class="f">is_dir</span>()
+p.<span class="f">write_text</span>(<span class="s">"Hello"</span>)
+content = p.<span class="f">read_text</span>()
+p.name  p.stem  p.suffix  p.parent
+
+<span class="k">for</span> f <span class="k">in</span> Path(<span class="s">"."</span>).<span class="f">glob</span>(<span class="s">"*.py"</span>): <span class="f">print</span>(f)
+Path(<span class="s">"output"</span>).<span class="f">mkdir</span>(exist_ok=<span class="k">True</span>)</pre></div>
+</section>
+
+<!-- ═══ 15 ASYNC ═══ -->
+<section id="s15">
+<h2><span class="num">15</span> Async / Await <span class="tag new">FAMILIAR!</span></h2>
+
+<div class="compare">
+  <div class="col"><div class="col-label">🍎 Swift</div><pre><span class="k">func</span> <span class="f">fetch</span>() <span class="k">async throws</span> -> <span class="t">User</span> {
+    <span class="k">let</span> (data,_) = <span class="k">try await</span>
+        URLSession.shared.data(from:url)
+    <span class="k">return try</span> JSONDecoder()
+        .decode(User.self, from:data)
+}
+Task { <span class="k">try await</span> <span class="f">fetch</span>() }</pre></div>
+  <div class="col"><div class="col-label">🐍 Python</div><pre><span class="k">import</span> asyncio, aiohttp
+
+<span class="k">async def</span> <span class="f">fetch</span>() -> <span class="t">dict</span>:
+    <span class="k">async with</span> aiohttp.ClientSession() <span class="k">as</span> s:
+        <span class="k">async with</span> s.<span class="f">get</span>(url) <span class="k">as</span> r:
+            <span class="k">return await</span> r.<span class="f">json</span>()
+
+
+asyncio.<span class="f">run</span>(<span class="f">fetch</span>())</pre></div>
+</div>
+
+<div class="single"><h3>Concurrent Tasks</h3>
+<pre><span class="k">async def</span> <span class="f">main</span>():
+    <span class="c"># Run 3 tasks at once (like async let / TaskGroup)</span>
+    results = <span class="k">await</span> asyncio.<span class="f">gather</span>(
+        <span class="f">fetch</span>(<span class="n">1</span>), <span class="f">fetch</span>(<span class="n">2</span>), <span class="f">fetch</span>(<span class="n">3</span>)
+    )
+
+    <span class="c"># With timeout</span>
+    <span class="k">try</span>:
+        r = <span class="k">await</span> asyncio.<span class="f">wait_for</span>(<span class="f">fetch</span>(<span class="n">1</span>), timeout=<span class="n">5</span>)
+    <span class="k">except</span> asyncio.<span class="t">TimeoutError</span>: ...</pre></div>
+
+<div class="tip"><strong>💡 Python async is single-threaded</strong> (event loop, like JS). For CPU-heavy work use <code>multiprocessing</code>. Async is best for I/O.</div>
+</section>
+
+<!-- ═══ 16 GENERATORS ═══ -->
+<section id="s16">
+<h2><span class="num">16</span> Generators &amp; Iterators <span class="tag new">PYTHON EXCLUSIVE</span></h2>
+
+<div class="single"><h3>yield — Lazy Sequences</h3>
+<pre><span class="k">def</span> <span class="f">countdown</span>(n):
+    <span class="k">while</span> n > <span class="n">0</span>:
+        <span class="k">yield</span> n       <span class="c"># pauses, returns n</span>
+        n -= <span class="n">1</span>
+
+<span class="k">for</span> x <span class="k">in</span> <span class="f">countdown</span>(<span class="n">5</span>): <span class="f">print</span>(x)  <span class="c"># 5,4,3,2,1</span>
+
+<span class="c"># Generator expression — lazy list comprehension</span>
+squares = (x**<span class="n">2</span> <span class="k">for</span> x <span class="k">in</span> <span class="f">range</span>(<span class="n">1_000_000</span>))
+<span class="c"># Uses almost NO memory!</span>
+<span class="f">next</span>(squares)  <span class="c"># 0</span>
+<span class="f">next</span>(squares)  <span class="c"># 1</span>
+
+<span class="c"># Practical — read huge files</span>
+<span class="k">def</span> <span class="f">read_big</span>(path):
+    <span class="k">with</span> <span class="f">open</span>(path) <span class="k">as</span> f:
+        <span class="k">for</span> line <span class="k">in</span> f: <span class="k">yield</span> line.<span class="f">strip</span>()</pre></div>
+
+<div class="tip"><strong>💡 Like AsyncSequence but synchronous.</strong> <code>range()</code>, <code>enumerate()</code>, <code>zip()</code>, <code>map()</code> all return generator-like objects!</div>
+</section>
+
+<!-- ═══ 17 DECORATORS ═══ -->
+<section id="s17">
+<h2><span class="num">17</span> Decorators — Like Property Wrappers</h2>
+
+<div class="single"><h3>How They Work</h3>
+<pre><span class="k">import</span> time
+
+<span class="k">def</span> <span class="f">timer</span>(func):
+    <span class="k">def</span> <span class="f">wrapper</span>(*args, **kwargs):
+        start = time.<span class="f">time</span>()
+        result = <span class="f">func</span>(*args, **kwargs)
+        <span class="f">print</span>(<span class="s">f"{func.__name__} took {time.time()-start:.2f}s"</span>)
+        <span class="k">return</span> result
+    <span class="k">return</span> wrapper
+
+<span class="b">@timer</span>
+<span class="k">def</span> <span class="f">slow</span>(): time.<span class="f">sleep</span>(<span class="n">1</span>)
+
+<span class="f">slow</span>()  <span class="c"># "slow took 1.00s"</span></pre></div>
+
+<div class="single"><h3>Built-in Decorators You'll Use</h3>
+<pre><span class="b">@property</span>         <span class="c"># computed property</span>
+<span class="b">@staticmethod</span>     <span class="c"># static func</span>
+<span class="b">@classmethod</span>      <span class="c"># factory/convenience init</span>
+<span class="b">@dataclass</span>        <span class="c"># auto init/repr/eq</span>
+<span class="b">@abstractmethod</span>   <span class="c"># protocol requirement</span>
+
+<span class="k">from</span> functools <span class="k">import</span> cache
+<span class="b">@cache</span>            <span class="c"># memoization — caches results</span>
+<span class="k">def</span> <span class="f">fib</span>(n):
+    <span class="k">if</span> n < <span class="n">2</span>: <span class="k">return</span> n
+    <span class="k">return</span> <span class="f">fib</span>(n-<span class="n">1</span>) + <span class="f">fib</span>(n-<span class="n">2</span>)
+
+<span class="f">fib</span>(<span class="n">100</span>)  <span class="c"># instant! (without @cache = impossibly slow)</span></pre></div>
+</section>
+
+<!-- ═══ 18 HTTP ═══ -->
+<section id="s18">
+<h2><span class="num">18</span> HTTP &amp; API Calls <span class="tag new">YOUR URLSession</span></h2>
+
+<div class="single"><h3>requests Library</h3>
+<pre><span class="c"># pip install requests</span>
+<span class="k">import</span> requests
+
+<span class="c"># GET</span>
+r = requests.<span class="f">get</span>(<span class="s">"https://api.example.com/users"</span>)
+r.<span class="f">status_code</span>    <span class="c"># 200</span>
+data = r.<span class="f">json</span>()  <span class="c"># auto-decode → dict</span>
+
+<span class="c"># GET with params</span>
+r = requests.<span class="f">get</span>(url, params={<span class="s">"q"</span>: <span class="s">"python"</span>, <span class="s">"page"</span>: <span class="n">1</span>})
+
+<span class="c"># POST with JSON</span>
+r = requests.<span class="f">post</span>(url,
+    json={<span class="s">"name"</span>: <span class="s">"Ali"</span>},
+    headers={<span class="s">"Authorization"</span>: <span class="s">"Bearer TOKEN"</span>}
+)
+
+r.<span class="f">raise_for_status</span>()  <span class="c"># raises on 4xx/5xx</span></pre></div>
+
+<div class="memo"><strong>✅ Comparison</strong>
+Swift: URLSession + JSONDecoder = ~10 lines. Python: <code>requests.get(url).json()</code> = 1 line.</div>
+</section>
+
+<!-- ═══ 19 TESTING ═══ -->
+<section id="s19">
+<h2><span class="num">19</span> Testing — Your XCTest <span class="tag new">NEW</span></h2>
+
+<div class="single"><h3>pytest</h3>
+<pre><span class="c"># pip install pytest</span>
+<span class="c"># test_math.py</span>
+
+<span class="k">def</span> <span class="f">test_add</span>():
+    <span class="k">assert</span> <span class="f">add</span>(<span class="n">2</span>, <span class="n">3</span>) == <span class="n">5</span>
+
+<span class="k">def</span> <span class="f">test_error</span>():
+    <span class="k">with</span> pytest.<span class="f">raises</span>(<span class="t">ValueError</span>):
+        <span class="f">create_user</span>(<span class="s">""</span>)
+
+<span class="c"># Parametrize (like @Test(arguments:))</span>
+<span class="b">@pytest.mark.parametrize</span>(<span class="s">"a,b,expected"</span>, [
+    (<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>), (<span class="n">0</span>, <span class="n">0</span>, <span class="n">0</span>), (-<span class="n">1</span>, <span class="n">1</span>, <span class="n">0</span>),
+])
+<span class="k">def</span> <span class="f">test_add_many</span>(a, b, expected):
+    <span class="k">assert</span> <span class="f">add</span>(a, b) == expected
+
+<span class="c"># Fixtures (like setUp)</span>
+<span class="b">@pytest.fixture</span>
+<span class="k">def</span> <span class="f">user</span>(): <span class="k">return</span> <span class="t">User</span>(<span class="s">"Ali"</span>, <span class="n">25</span>)
+
+<span class="k">def</span> <span class="f">test_greet</span>(user):
+    <span class="k">assert</span> <span class="s">"Ali"</span> <span class="k">in</span> user.<span class="f">greet</span>()
+
+<span class="c"># Run: pytest -v</span></pre></div>
+</section>
+
+<!-- ═══ 20 PYTHONIC TIPS ═══ -->
+<section id="s20">
+<h2><span class="num">20</span> Pythonic Tips <span class="tag key">⭐ MUST READ</span></h2>
+
+<div class="single"><h3>1. Truthiness</h3>
+<pre><span class="c"># ❌ if len(lst) > 0:  /  if name != "":</span>
+<span class="c"># ✅ if lst:  /  if name:  /  if x is not None:</span></pre></div>
+
+<div class="single"><h3>2. Unpacking</h3>
+<pre>first, *rest = [<span class="n">1</span>,<span class="n">2</span>,<span class="n">3</span>,<span class="n">4</span>]  <span class="c"># first=1, rest=[2,3,4]</span>
+a, b = b, a              <span class="c"># swap</span>
+<span class="f">func</span>(*args, **kwargs)    <span class="c"># spread into call</span></pre></div>
+
+<div class="single"><h3>3. Walrus Operator :=</h3>
+<pre><span class="k">if</span> (n := <span class="f">len</span>(data)) > <span class="n">10</span>:
+    <span class="f">print</span>(<span class="s">f"Too long: {n}"</span>)
+
+<span class="k">while</span> (line := f.<span class="f">readline</span>()) != <span class="s">""</span>:
+    <span class="f">process</span>(line)</pre></div>
+
+<div class="single"><h3>4. One-Liners</h3>
+<pre><span class="f">any</span>(x > <span class="n">0</span> <span class="k">for</span> x <span class="k">in</span> nums)       <span class="c"># any match?</span>
+<span class="f">all</span>(x > <span class="n">0</span> <span class="k">for</span> x <span class="k">in</span> nums)       <span class="c"># all match?</span>
+<span class="f">min</span>(users, key=<span class="k">lambda</span> u: u.age)  <span class="c"># min by key</span>
+<span class="k">if</span> <span class="n">18</span> <= age <= <span class="n">65</span>:              <span class="c"># chained comparison</span>
+{**d1, **d2}                     <span class="c"># merge dicts</span>
+<span class="s">"hello"</span>[::-<span class="n">1</span>]                    <span class="c"># reverse string</span>
+[x <span class="k">for</span> sub <span class="k">in</span> nested <span class="k">for</span> x <span class="k">in</span> sub]  <span class="c"># flatten</span>
+<span class="f">list</span>(<span class="f">dict</span>.<span class="f">fromkeys</span>(items))       <span class="c"># unique, keep order</span></pre></div>
+
+<div class="single"><h3>5. Debug Print (3.8+)</h3>
+<pre>x = <span class="n">42</span>
+<span class="f">print</span>(<span class="s">f"{x=}"</span>)                <span class="c"># "x=42" self-documenting!</span>
+<span class="f">print</span>(<span class="s">f"{x=}, {type(x)=}"</span>)  <span class="c"># "x=42, type(x)=&lt;class 'int'&gt;"</span>
+<span class="f">breakpoint</span>()               <span class="c"># drops into debugger (pdb)</span></pre></div>
+
+<div class="single"><h3>6. Pattern Translation Table</h3>
+<table class="cheat-table">
+<tr><th>Swift</th><th>Python</th></tr>
+<tr><td>guard let x = y else { return }</td><td>if y is None: return; x = y</td></tr>
+<tr><td>.compactMap { $0 }</td><td>[x for x in arr if x is not None]</td></tr>
+<tr><td>.first(where: { $0 > 5 })</td><td>next((x for x in arr if x > 5), None)</td></tr>
+<tr><td>.contains(where: { $0 > 5 })</td><td>any(x > 5 for x in arr)</td></tr>
+<tr><td>.allSatisfy { $0 > 0 }</td><td>all(x > 0 for x in arr)</td></tr>
+<tr><td>defer { }</td><td>try/finally or with</td></tr>
+<tr><td>extension</td><td>Just add methods (monkey-patch)</td></tr>
+<tr><td>enum + associated values</td><td>dataclass subclasses or match/case</td></tr>
+</table></div>
+</section>
+
+<!-- ═══ 21 QUICK REF ═══ -->
+<section id="s21">
+<h2><span class="num">21</span> Complete Quick Reference</h2>
+
+<table class="cheat-table">
+<tr><th>Python</th><th>Swift</th><th>What</th></tr>
+<tr><td>def</td><td>func</td><td>Define function</td></tr>
+<tr><td>self</td><td>self</td><td>Instance ref (explicit!)</td></tr>
+<tr><td>__init__</td><td>init</td><td>Constructor</td></tr>
+<tr><td>None</td><td>nil</td><td>Null</td></tr>
+<tr><td>True / False</td><td>true / false</td><td>Booleans (CAPITAL!)</td></tr>
+<tr><td>and / or / not</td><td>&& / || / !</td><td>Logic</td></tr>
+<tr><td>elif</td><td>else if</td><td>Else-if</td></tr>
+<tr><td>len(x)</td><td>x.count</td><td>Length</td></tr>
+<tr><td>range(n)</td><td>0..&lt;n</td><td>Range</td></tr>
+<tr><td>enumerate()</td><td>.enumerated()</td><td>Index+value</td></tr>
+<tr><td>zip(a,b)</td><td>zip(a,b)</td><td>Pair sequences</td></tr>
+<tr><td>isinstance()</td><td>is / as?</td><td>Type check</td></tr>
+<tr><td>raise</td><td>throw</td><td>Throw error</td></tr>
+<tr><td>except</td><td>catch</td><td>Catch error</td></tr>
+<tr><td>finally</td><td>defer</td><td>Always runs</td></tr>
+<tr><td>pass</td><td>—</td><td>Empty block</td></tr>
+<tr><td>print()</td><td>print()</td><td>Same! 🎉</td></tr>
+<tr><td>import</td><td>import</td><td>Import</td></tr>
+<tr><td>pip</td><td>SPM/Pods</td><td>Package mgr</td></tr>
+<tr><td>@property</td><td>var { get }</td><td>Computed prop</td></tr>
+<tr><td>@staticmethod</td><td>static func</td><td>Static method</td></tr>
+<tr><td>@classmethod</td><td>convenience init</td><td>Factory</td></tr>
+<tr><td>@dataclass</td><td>struct</td><td>Data container</td></tr>
+<tr><td>lambda</td><td>{ closure }</td><td>Anonymous func</td></tr>
+<tr><td>f"...{x}"</td><td>"\(x)"</td><td>Interpolation</td></tr>
+<tr><td>with open()</td><td>—</td><td>Auto-close context</td></tr>
+<tr><td>x if c else y</td><td>c ? x : y</td><td>Ternary</td></tr>
+<tr><td>**</td><td>pow()</td><td>Power</td></tr>
+<tr><td>//</td><td>Int(a/b)</td><td>Floor division</td></tr>
+<tr><td>yield</td><td>—</td><td>Generator</td></tr>
+<tr><td>async def</td><td>async func</td><td>Async function</td></tr>
+<tr><td>await</td><td>await</td><td>Await result</td></tr>
+<tr><td>assert</td><td>XCTAssert</td><td>Test assertion</td></tr>
+<tr><td>breakpoint()</td><td>lldb</td><td>Debugger</td></tr>
+<tr><td>[x for x in]</td><td>.map { }</td><td>Comprehension</td></tr>
+<tr><td>is / is not</td><td>=== / !==</td><td>Identity</td></tr>
+<tr><td>in</td><td>.contains()</td><td>Membership</td></tr>
+<tr><td>snake_case</td><td>camelCase</td><td>Naming</td></tr>
+</table>
+</section>
+
+<div style="text-align:center;padding:50px 0 30px;border-top:1px solid var(--border)">
+  <div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px">You're ready to Python 🐍</div>
+  <div style="color:var(--muted);font-size:.9rem">Made for Swift devs who want to learn Python fast ⚡</div>
+</div>
+
+</div>
+</body>
+</html>
